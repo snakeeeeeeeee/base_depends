@@ -57,7 +57,7 @@ function install_nodejs_and_npm() {
         echo "Node.js 已安装"
     else
         echo "Node.js 未安装，正在安装..."
-        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
         sudo apt-get install -y nodejs
     fi
 
