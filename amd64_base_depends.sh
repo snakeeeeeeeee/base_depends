@@ -93,14 +93,43 @@ function check_go_installation() {
 
 
 function install_go() {
-	# 安装 Go
-    if ! check_go_installation; then
-        sudo rm -rf /usr/local/go
-        curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
-        source $HOME/.bash_profile
+    # 检查 Go 是否已安装
+    if check_go_installation; then
+        echo "Go 已经安装。当前版本："
         go version
+        echo "如果您想重新安装，请先卸载现有版本。"
+        return
     fi
+
+    # 安装 Go
+    echo "正在安装 Go..."
+    sudo rm -rf /usr/local/go
+    curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+    
+    # 添加到 PATH
+    if ! grep -q "/usr/local/go/bin" $HOME/.bashrc; then
+        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
+    fi
+    if ! grep -q "/usr/local/go/bin" $HOME/.bash_profile; then
+        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+    fi
+    
+    # 立即更新当前 shell 的 PATH
+    export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    
+    # 验证安装
+    if command -v go &> /dev/null; then
+        echo "Go 安装成功。当前版本："
+        go version
+    else
+        echo "Go 安装失败或未正确添加到 PATH"
+        return
+    fi
+
+    # 提示用户刷新 PATH
+    echo "安装完成。请运行以下命令来刷新您的 PATH："
+    echo "  source ~/.bashrc"
+    echo "或重新打开终端以使更改生效。"
 }
 
 
