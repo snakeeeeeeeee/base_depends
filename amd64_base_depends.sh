@@ -53,19 +53,37 @@ function install_docker() {
 
 # 检查并安装 Node.js 和 npm
 function install_nodejs_and_npm() {
-    if command -v node > /dev/null 2>&1; then
-        echo "Node.js 已安装"
+    # 检查是否已安装 nvm
+    if [ ! -d "$HOME/.nvm" ]; then
+        echo "nvm 未安装，正在安装..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+        
+        # 加载 nvm
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
     else
-        echo "Node.js 未安装，正在安装..."
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-        sudo apt-get install -y nodejs
+        echo "nvm 已安装"
     fi
 
-    if command -v npm > /dev/null 2>&1; then
-        echo "npm 已安装"
+    # 确保 nvm 命令可用
+    source ~/.bashrc
+
+    # 检查 Node.js 是否已安装
+    if ! command -v node > /dev/null 2>&1; then
+        echo "Node.js 未安装，正在安装 Node.js 20 LTS..."
+        nvm install 20
+        nvm use 20
+        nvm alias default 20
     else
-        echo "npm 未安装，正在安装..."
-        sudo apt-get install -y npm
+        echo "Node.js 已安装，版本为: $(node -v)"
+    fi
+
+    # npm 会随 Node.js 一起安装，检查版本
+    if command -v npm > /dev/null 2>&1; then
+        echo "npm 已安装，版本为: $(npm -v)"
+    else
+        echo "npm 安装可能出现问题，请检查安装状态"
     fi
 }
 
