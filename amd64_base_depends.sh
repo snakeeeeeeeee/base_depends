@@ -71,10 +71,10 @@ function install_nodejs_and_npm() {
 
     # 检查 Node.js 是否已安装
     if ! command -v node > /dev/null 2>&1; then
-        echo "Node.js 未安装，正在安装 Node.js 20 LTS..."
-        nvm install 20
-        nvm use 20
-        nvm alias default 20
+        echo "Node.js 未安装，正在安装 Node.js 22 LTS..."
+        nvm install 22
+        nvm use 22
+        nvm alias default 22
     else
         echo "Node.js 已安装，版本为: $(node -v)"
     fi
