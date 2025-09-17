@@ -122,7 +122,7 @@ function install_go() {
     # 安装 Go
     echo "正在安装 Go..."
     sudo rm -rf /usr/local/go
-    curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+    curl -L https://go.dev/dl/go1.25.1.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
     
     # 添加到 PATH
     if ! grep -q "/usr/local/go/bin" $HOME/.bashrc; then
