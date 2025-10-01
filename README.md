@@ -1,1 +1,1 @@
-wget -O amd64_base_depends.sh https://raw.githubusercontent.com/snakeeeeeeeee/base_depends/main/amd64_base_depends.sh && chmod +x amd64_base_depends.sh && ./amd64_base_depends.sh
+wget -O amd64_base_depends.sh https://raw.githubusercontent.com/snakeeeeeeeee/base_depends/main/amd64_base_depends.sh && chmod +x amd64_base_depends.sh && ./amd64_base_depends.sh 
