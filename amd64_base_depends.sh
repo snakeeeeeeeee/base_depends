@@ -150,6 +150,37 @@ function install_go() {
     echo "或重新打开终端以使更改生效。"
 }
 
+# 安装 Rust 环境
+function install_rust() {
+    # 检查 Rust 是否已安装
+    if command -v rustc > /dev/null 2>&1; then
+        echo "Rust 已安装。当前版本：$(rustc --version)"
+        return
+    fi
+
+    echo "Rust 未安装，正在安装最新稳定版..."
+
+    # 官方推荐的 rustup 安装命令（非交互模式）
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+    # 将 cargo 环境变量写入 bashrc
+    if ! grep -q "$HOME/.cargo/bin" $HOME/.bashrc; then
+        echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $HOME/.bashrc
+    fi
+    if ! grep -q "$HOME/.cargo/bin" $HOME/.bash_profile; then
+        echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $HOME/.bash_profile
+    fi
+
+    # 立即更新当前 shell 环境
+    export PATH="$HOME/.cargo/bin:$PATH"
+
+    # 验证安装
+    if command -v rustc > /dev/null 2>&1; then
+        echo "✅ Rust 安装成功。当前版本：$(rustc --version)"
+    else
+        echo "❌ Rust 安装失败，请检查网络或安装脚本。"
+    fi
+}
 
 
 
@@ -165,6 +196,8 @@ function install_all_depends() {
 	install_pm2
 	# go
 	install_go
+	# rust
+    install_rust
 }
 
 
